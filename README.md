@@ -2,7 +2,7 @@
 
 ## Deploy
 
-1. Pull repo locally and copy `.env.sample` into another file called `.env`. Fill out the fields in this file with your alchemy app url and test net public and private keys.
+1. Pull repo locally and copy `.env.sample` into another file called `.env`. Fill out the fields in this file with your ethereum client's url and your public and private keys.
 2. Run the following script
 
 ```bash
