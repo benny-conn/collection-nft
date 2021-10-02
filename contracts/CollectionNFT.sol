@@ -40,6 +40,19 @@ contract CollectionNFT is ERC721, IERC721Receiver {
         return _collections[tokenId];
     }
 
+    function pullNFT(address contractAddress, uint256 tokenID) public {
+        require(
+            _msgSender() == _nftsSent[contractAddress][tokenID],
+            "CollectionNFT: Only the sender can pull an NFT"
+        );
+        delete _nftsSent[contractAddress][tokenID];
+        IERC721(contractAddress).transferFrom(
+            address(this),
+            _msgSender(),
+            tokenID
+        );
+    }
+
     function tokenURI(uint256 tokenId)
         public
         view

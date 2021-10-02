@@ -1,7 +1,7 @@
 {
   "name": "safe-transfer",
   "scripts": {
-    "deploy-dev": "npx hardhat run scripts/deploy.js --network ropsten"
+    "deploy-dev": "npx hardhat run scripts/deploy.js --network mainnet"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

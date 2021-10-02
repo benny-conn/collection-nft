@@ -1,14 +1,9 @@
 async function main() {
-  const SafeTransfer = await ethers.getContractFactory("SafeTransfer")
+  const CollectionNFT = await ethers.getContractFactory("CollectionNFT")
 
   // Start deployment, returning a promise that resolves to a contract object
-  const safeTransfer = await SafeTransfer.deploy() // Instance of the contract
-  console.log("SafeTransfer deployed to address:", safeTransfer.address)
-  const SafeTransferNFT = await ethers.getContractFactory("SafeTransferNFT")
-
-  // Start deployment, returning a promise that resolves to a contract object
-  const safeTransferNFT = await SafeTransferNFT.deploy() // Instance of the contract
-  console.log("SafeTransferNFT deployed to address:", safeTransferNFT.address)
+  const collNFT = await CollectionNFT.deploy("Collection NFT", "COL") // Instance of the contract
+  console.log("CollectionNFT deployed to address:", collNFT.address)
 }
 
 main()
