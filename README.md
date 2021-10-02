@@ -18,9 +18,17 @@ Done! The address of your deployed contract will be printed in the console on a 
 
 _Note: if you accidentally send an NFT to the **Collection NFT** contract you can call the `pullNFT(contractAddress,tokenID)` function that will send your NFT back to you. Once a collection has been minted, however, this function is no longer available._
 
+_Note: a Collection NFT may represent no more than 10 NFTs._
+
 ## Unwrapping a Collection into individual NFTs
 
 1. Use **Collection NFT**'s `burn(tokenID)` function (which can only be called by the owner of a token) and all of the NFTs in a Collection will be sent to the owner of the Collection NFT. The Collection NFT will be burnt as well.
+
+## TokenURI
+
+The token URI for this contract (received by calling `tokenURI(tokenID)`) will be a base64 encoded JSON document that describes the collection and provides an SVG image depicting the list of NFTs that make up the collection.
+
+If you wish to get a list of the NFTs in a Collection with their contract addresses and token IDs, call `getNFTsForCollection(collectionID)` and a list of NFTs with contract addresses and token IDs will be returned.
 
 ## ERC-721 Functionality
 
