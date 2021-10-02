@@ -19,8 +19,8 @@ contract CollectionNFT is ERC721, IERC721Receiver {
         address contractAddress;
         uint256 tokenId;
     }
-    // NFTs sent represents a mapping of wallet addresses to token contracts to ids of the NFTs
-    // that they sent to the contract to be concatenated into a single NFT
+    // NFTs sent represents a mapping of contract addresses to token IDs to the wallet address
+    // that send the NFT to the contract.
     mapping(address => mapping(uint256 => address)) private _nftsSent;
 
     // collections represents a mapping of CollectionNFT token IDs to the NFTs that are in the collection
