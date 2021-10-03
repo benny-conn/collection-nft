@@ -10,7 +10,7 @@ import "./Base64.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract CollectionNFT is ERC721, IERC721Receiver {
+contract CollectionNFT is ERC721 {
     using Bytes for bytes;
     using Strings for uint256;
     using Counters for Counters.Counter;
@@ -19,9 +19,6 @@ contract CollectionNFT is ERC721, IERC721Receiver {
         address contractAddress;
         uint256 tokenId;
     }
-    // NFTs sent represents a mapping of contract addresses to token IDs to the wallet address
-    // that send the NFT to the contract.
-    mapping(address => mapping(uint256 => address)) private _nftsSent;
 
     // collections represents a mapping of CollectionNFT token IDs to the NFTs that are in the collection
     mapping(uint256 => NFT[]) private _collections;
@@ -38,19 +35,6 @@ contract CollectionNFT is ERC721, IERC721Receiver {
         returns (NFT[] memory)
     {
         return _collections[tokenId];
-    }
-
-    function pullNFT(address contractAddress, uint256 tokenID) public {
-        require(
-            _msgSender() == _nftsSent[contractAddress][tokenID],
-            "CollectionNFT: Only the sender can pull an NFT"
-        );
-        delete _nftsSent[contractAddress][tokenID];
-        IERC721(contractAddress).transferFrom(
-            address(this),
-            _msgSender(),
-            tokenID
-        );
     }
 
     function tokenURI(uint256 tokenId)
@@ -134,12 +118,11 @@ contract CollectionNFT is ERC721, IERC721Receiver {
         _mint(_msgSender(), id);
         _tokenIDCounter.increment();
         for (uint256 i = 0; i < tokenContracts.length; i++) {
-            require(
-                _nftsSent[tokenContracts[i]][tokenIDs[i]] == _msgSender(),
-                "CollectionNFT: not permitted to collectionize NFT"
-            );
-            _collections[id].push(NFT(tokenContracts[i], tokenIDs[i]));
-            delete _nftsSent[tokenContracts[i]][tokenIDs[i]];
+            address tokenContract = tokenContracts[i];
+            uint256 tokenID = tokenIDs[i];
+            IERC721 token = IERC721(tokenContract);
+            token.safeTransferFrom(_msgSender(), address(this), tokenID);
+            _collections[id].push(NFT(tokenContract, tokenID));
         }
     }
 
@@ -160,22 +143,6 @@ contract CollectionNFT is ERC721, IERC721Receiver {
         }
         _burn(tokenId);
         delete _collections[tokenId];
-    }
-
-    function onERC721Received(
-        address operator,
-        address from,
-        uint256 tokenId,
-        bytes calldata data
-    ) external override returns (bytes4) {
-        require(
-            data.length == 20,
-            "CollectionNFT: data must contain contract address of token"
-        );
-        bytes memory addrBS = data[:20];
-        address asAddr = addrBS.toAddress();
-        _nftsSent[asAddr][tokenId] = from;
-        return this.onERC721Received.selector;
     }
 
     function supportsInterface(bytes4 interfaceId)

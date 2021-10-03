@@ -13,7 +13,7 @@ Done! The address of your deployed contract will be printed in the console on a 
 
 ## Minting a Collection
 
-1. For each NFT that you wish to be in the collection, use that NFT's `safeTransferFrom(from,to,tokenID,data)` function to send the NFT to the **Collection NFT** contract. For the `data` parameter in `safeTransferFrom()`, pass the byte representation of the contract address for the given NFT being sent.
+1. For each NFT that you wish to be in the collection, use that NFT's `approve(to,tokenID)` or `setApprovalForAll(to)` with `to` being the address for the **Collection NFT** contract and `tokenID` being any tokenID you wish to Collectionize.
 2. Once the **Collection NFT** contract has all of the NFTs you wish to mint into a Collection, call **Collection NFT**'s `mint(contractAddresses,tokenIDs)` function where `tokenIDs` is a array of all of the token IDs to be in the collection and `contractAddresses` is an equal length array of the contract addresses for each token ID where the indicies of each array corresponds to the contract to token relationship of every token. (e.g. `mint([0x9a..0d, 0x19..pz], [0,1])` will mint a collection with the NFT at contract address 0x9a..0d and token ID 0 and the NFT at contract address 0x19..pz with token ID 1)
 
 _Note: if you accidentally send an NFT to the **Collection NFT** contract you can call the `pullNFT(contractAddress,tokenID)` function that will send your NFT back to you. Once a collection has been minted, however, this function is no longer available._
