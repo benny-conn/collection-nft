@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "./Bytes.sol";
@@ -10,7 +10,7 @@ import "./Base64.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract CollectionNFT is ERC721, IERC721Receiver {
+contract CollectionNFT is ERC721Enumerable, IERC721Receiver {
     using Bytes for bytes;
     using Strings for uint256;
     using Counters for Counters.Counter;
@@ -22,8 +22,6 @@ contract CollectionNFT is ERC721, IERC721Receiver {
 
     // collections represents a mapping of CollectionNFT token IDs to the NFTs that are in the collection
     mapping(uint256 => NFT[]) private _collections;
-
-    Counters.Counter private _tokenIDCounter;
 
     constructor(string memory name, string memory symbol)
         ERC721(name, symbol)
@@ -111,9 +109,9 @@ contract CollectionNFT is ERC721, IERC721Receiver {
             "CollectionNFT: tokenContracts and tokenIDs must be the same length"
         );
 
-        uint256 id = _tokenIDCounter.current();
+        uint256 id = totalSupply();
         _mint(_msgSender(), id);
-        _tokenIDCounter.increment();
+
         for (uint256 i = 0; i < tokenContracts.length; i++) {
             address tokenContract = tokenContracts[i];
             uint256 tokenID = tokenIDs[i];
