@@ -16,8 +16,6 @@ Done! The address of your deployed contract will be printed in the console on a 
 1. For each NFT that you wish to be in the collection, use that NFT's `approve(to,tokenID)` or `setApprovalForAll(to)` with `to` being the address for the **Collection NFT** contract and `tokenID` being any tokenID you wish to Collectionize.
 2. Once the **Collection NFT** contract is approved for all of the NFTs you wish to mint into a Collection, call **Collection NFT**'s `mint(contractAddresses,tokenIDs)` function where `tokenIDs` is a array of all of the token IDs to be in the collection and `contractAddresses` is an equal length array of the contract addresses for each token ID where the indicies of each array corresponds to the contract to token relationship of every token. (e.g. `mint([0x9a..0d, 0x19..pz], [0,1])` will mint a collection with the NFT at contract address 0x9a..0d and token ID 0 and the NFT at contract address 0x19..pz with token ID 1)
 
-_Note: a Collection NFT may represent no more than 10 NFTs._
-
 ## Unwrapping a Collection into individual NFTs
 
 1. Use **Collection NFT**'s `burn(tokenID)` function (which can only be called by the owner of a token) and all of the NFTs in a Collection will be sent to the owner of the Collection NFT. The Collection NFT will be burnt as well.

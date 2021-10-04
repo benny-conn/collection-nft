@@ -110,10 +110,7 @@ contract CollectionNFT is ERC721, IERC721Receiver {
             tokenContracts.length == tokenIDs.length,
             "CollectionNFT: tokenContracts and tokenIDs must be the same length"
         );
-        require(
-            tokenContracts.length <= 10,
-            "CollectionNFT: cannot mint more than 10 NFTs at a time"
-        );
+
         uint256 id = _tokenIDCounter.current();
         _mint(_msgSender(), id);
         _tokenIDCounter.increment();
