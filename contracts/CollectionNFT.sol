@@ -10,7 +10,7 @@ import "./Base64.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract CollectionNFT is ERC721 {
+contract CollectionNFT is ERC721, IERC721Receiver {
     using Bytes for bytes;
     using Strings for uint256;
     using Counters for Counters.Counter;
@@ -143,6 +143,15 @@ contract CollectionNFT is ERC721 {
         }
         _burn(tokenId);
         delete _collections[tokenId];
+    }
+
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes memory
+    ) public virtual override returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 
     function supportsInterface(bytes4 interfaceId)
