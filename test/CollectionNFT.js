@@ -20,33 +20,26 @@ describe("CollectionNFT", function () {
     for (let i = 0; i < 10; i++) {
       await testContract.mint(them.address, i)
     }
-    const addrAsBytes = utils.arrayify(testContract.address)
-    for (let i = 0; i < 10; i++) {
-      await testContract
-        .connect(them)
-        ["safeTransferFrom(address,address,uint256,bytes)"](
-          them.address,
-          contract.address,
-          i,
-          addrAsBytes
-        )
-    }
 
-    await contract.mint(
-      [
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-        testContract.address,
-      ],
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    )
+    await testContract.connect(them).setApprovalForAll(contract.address, true)
+
+    await contract
+      .connect(them)
+      .mint(
+        [
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+          testContract.address,
+        ],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      )
     const uri = await contract.tokenURI(0)
     console.log("URI: ", uri)
 
